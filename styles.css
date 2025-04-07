@@ -1,0 +1,117 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  line-height: 1.4;
+  max-width: 600px;
+  margin: auto;
+  background-color: #0f111a;
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: #f0f0f0;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1), transparent 60%);
+  animation: glow 6s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes glow {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+input[type="number"] {
+  font-size: 16px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+#notes {
+  width: 60px;
+}
+
+#redJ {
+  width: 50px;
+}
+
+#atk, #miss {
+  width: 40px;
+}
+
+#scoreBorders p {
+  margin: 2px 0;
+  transition: all 0.3s ease;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: limegreen;
+}
+
+.gray {
+  color: gray;
+}
+
+.gold {
+  color: goldenrod;
+  font-weight: bold;
+}
+
+.blue {
+  color: dodgerblue;
+  font-weight: bold;
+}
+
+.fade {
+  transition: opacity 0.3s ease;
+}
+
+.fade-hidden {
+  opacity: 0;
+}
+
+.highlight {
+  animation: flash 0.5s ease;
+}
+
+@keyframes flash {
+  0% { background-color: #ffffcc; }
+  100% { background-color: transparent; }
+}
+
+#simulation label {
+  margin-right: 10px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+#result {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#result span {
+  text-shadow:
+    0 0 2px rgba(255,255,255,0.6),
+    1px 1px 2px rgba(0,0,0,0.7);
+}
+
+@media (max-width: 480px) {
+  h3, #simulation p, #scoreLoss p {
+    font-size: 16px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+}

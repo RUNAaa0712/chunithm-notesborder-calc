@@ -3,34 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>スコアシミュレーター</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      line-height: 1.4;
-    }
-    input[type="number"] {
-      width: 80px;
-      font-size: 16px;
-      padding: 4px;
-    }
-    #scoreBorders p {
-      margin: 2px 0;
-    }
-    .red {
-      color: red;
-    }
-    .green {
-      color: green;
-    }
-    #simulation label {
-      margin-right: 10px;
-    }
-    #result {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h3>ノート数 <input type="number" id="notes" value="2000"></h3>
@@ -42,117 +16,26 @@
 
   <div id="scoreLoss">
     <p><strong>減点されるスコア</strong></p>
-    <p class="red">赤JUSTICE 約<span id="redJusticeLoss">-</span>点 × <span id="redJusticeCount">0</span> = <span id="redJusticeTotal">0</span></p>
-    <p class="green">ATTACK 約<span id="attackLoss">-</span>点 × <span id="attackCount">0</span> = <span id="attackTotal">0</span></p>
-    <p>MISS 約<span id="missLoss">-</span>点 × <span id="missCount">0</span> = <span id="missTotal">0</span></p>
+    <p class="red">赤JUSTICE 約<span id="redJusticeLoss" class="fade">-</span>点 × <span id="redJusticeCount" class="fade">0</span> = <span id="redJusticeTotal" class="fade">0</span></p>
+    <p class="green">ATTACK 約<span id="attackLoss" class="fade">-</span>点 × <span id="attackCount" class="fade">0</span> = <span id="attackTotal" class="fade">0</span></p>
+    <p class="gray">MISS 約<span id="missLoss" class="fade">-</span>点 × <span id="missCount" class="fade">0</span> = <span id="missTotal" class="fade">0</span></p>
   </div>
 
   <div id="simulation">
     <p><strong>シミュレーション</strong></p>
     <label class="red">赤J <input type="number" id="redJ" value="0"> 個</label>
     <label class="green">ATK <input type="number" id="atk" value="0"> 個</label>
-    <label>MISS <input type="number" id="miss" value="0"> 個</label>
+    <label class="gray">MISS <input type="number" id="miss" value="0"> 個</label>
   </div>
 
-  <p id="result"></p>
+  <p id="result">
+    <span id="jcCountSpan" class="gold fade">0</span>/
+    <span id="redJSpan" class="red fade">0</span>/
+    <span id="atkSpan" class="green fade">0</span>/
+    <span id="missSpan" class="gray fade">0</span>
+    <span id="scoreSpan" class="blue fade">0</span>
+  </p>
 
-  <script>
-    const notesInput = document.getElementById('notes');
-    const redJInput = document.getElementById('redJ');
-    const atkInput = document.getElementById('atk');
-    const missInput = document.getElementById('miss');
-
-    const redJusticeLossEl = document.getElementById('redJusticeLoss');
-    const attackLossEl = document.getElementById('attackLoss');
-    const missLossEl = document.getElementById('missLoss');
-
-    const redJusticeCountEl = document.getElementById('redJusticeCount');
-    const attackCountEl = document.getElementById('attackCount');
-    const missCountEl = document.getElementById('missCount');
-
-    const redJusticeTotalEl = document.getElementById('redJusticeTotal');
-    const attackTotalEl = document.getElementById('attackTotal');
-    const missTotalEl = document.getElementById('missTotal');
-
-    const resultEl = document.getElementById('result');
-    const bordersEl = document.getElementById('borders');
-
-    const scoreGoals = [
-      { score: 1009990, type: 'redJ' },
-      { score: 1009950, type: 'redJ' },
-      { score: 1009900, type: 'redJ' },
-      { score: 1009000, type: 'atk' },
-      { score: 1007500, type: 'atk' },
-      { score: 1000000, type: 'atk' }
-    ];
-
-    function calculateScore(base, redJ, atk, miss, totalNotes) {
-      const jc = totalNotes - redJ - atk - miss;
-      return Math.floor(base * 1.01 * jc + base * redJ + base * 0.5 * atk);
-    }
-
-    function findMaxAllowed(goal, base, type, totalNotes) {
-      for (let i = 0; i <= totalNotes; i++) {
-        let redJ = 0, atk = 0, miss = 0;
-        if (type === 'redJ') redJ = i;
-        else if (type === 'atk') atk = i;
-        const score = calculateScore(base, redJ, atk, miss, totalNotes);
-        if (score < goal) return i - 1;
-      }
-      return totalNotes;
-    }
-
-    function updateScore() {
-      const totalNotes = Number(notesInput.value);
-      const redJ = Number(redJInput.value);
-      const atk = Number(atkInput.value);
-      const miss = Number(missInput.value);
-
-      const base = 1000000 / totalNotes;
-
-      const redJLoss = base * (1 - 1);
-      const atkLoss = base * (1 - 0.5);
-      const missLoss = base * (1 - 0);
-
-      const redTotal = Math.floor(base * 1.01 * redJ - base * redJ);
-      const atkTotal = Math.floor(base * 1.01 * atk - base * 0.5 * atk);
-      const missTotal = Math.floor(base * 1.01 * miss);
-
-      redJusticeLossEl.textContent = (base * 0.01).toFixed(1);
-      attackLossEl.textContent = (base * 0.51).toFixed(1);
-      missLossEl.textContent = (base * 1.01).toFixed(1);
-
-      redJusticeCountEl.textContent = redJ;
-      attackCountEl.textContent = atk;
-      missCountEl.textContent = miss;
-
-      redJusticeTotalEl.textContent = redTotal;
-      attackTotalEl.textContent = atkTotal;
-      missTotalEl.textContent = missTotal;
-
-      const jcCount = totalNotes - redJ - atk - miss;
-      const score = calculateScore(base, redJ, atk, miss, totalNotes);
-
-      resultEl.textContent = `${jcCount}/${redJ}/${atk}/${miss} ${score}`;
-
-      bordersEl.innerHTML = "";
-      scoreGoals.forEach(goal => {
-        const maxAllowed = findMaxAllowed(goal.score, base, goal.type, totalNotes);
-        const colorClass = goal.type === 'redJ' ? 'red' : 'green';
-        const label = goal.type === 'redJ' ? '赤J' : 'ATK';
-        const text = `${goal.score} <span class="${colorClass}">${label} ${maxAllowed}個以内</span>`;
-        const p = document.createElement('p');
-        p.innerHTML = text;
-        bordersEl.appendChild(p);
-      });
-    }
-
-    notesInput.addEventListener('input', updateScore);
-    redJInput.addEventListener('input', updateScore);
-    atkInput.addEventListener('input', updateScore);
-    missInput.addEventListener('input', updateScore);
-
-    updateScore();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
