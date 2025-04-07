@@ -71,10 +71,32 @@ function findMaxAllowed(goal, base, type, totalNotes) {
 }
 
 function updateScore() {
-  const totalNotes = Number(notesInput.value);
+  const totalNotesRaw = notesInput.value.trim();
+  if (totalNotesRaw === '') return; // 入力が空欄なら何もしない
+
+  const totalNotes = Number(totalNotesRaw);
   const redJ = Number(redJInput.value);
   const atk = Number(atkInput.value);
   const miss = Number(missInput.value);
+
+  if (!totalNotes || isNaN(totalNotes) || totalNotes <= 0) {
+    animateChange(jcCountSpan, '-');
+    animateChange(redJSpan, '-');
+    animateChange(atkSpan, '-');
+    animateChange(missSpan, '-');
+    animateChange(scoreSpan, '-');
+    animateChange(redJusticeLossEl, '-');
+    animateChange(attackLossEl, '-');
+    animateChange(missLossEl, '-');
+    animateChange(redJusticeCountEl, '-');
+    animateChange(attackCountEl, '-');
+    animateChange(missCountEl, '-');
+    animateChange(redJusticeTotalEl, '-');
+    animateChange(attackTotalEl, '-');
+    animateChange(missTotalEl, '-');
+    bordersEl.innerHTML = "";
+    return;
+  }
 
   const base = 1000000 / totalNotes;
 
