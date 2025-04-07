@@ -110,17 +110,17 @@
 
       const base = 1000000 / totalNotes;
 
-      const redJLoss = base * (1 - 1.01);
-      const atkLoss = base * 0.5;
-      const missLoss = base * 1.0;
+      const redJLoss = base * (1 - 1);
+      const atkLoss = base * (1 - 0.5);
+      const missLoss = base * (1 - 0);
 
-      const redTotal = Math.floor(redJLoss * redJ);
-      const atkTotal = Math.floor(atkLoss * atk);
-      const missTotal = Math.floor(missLoss * miss);
+      const redTotal = Math.floor(base * 1.01 * redJ - base * redJ);
+      const atkTotal = Math.floor(base * 1.01 * atk - base * 0.5 * atk);
+      const missTotal = Math.floor(base * 1.01 * miss);
 
-      redJusticeLossEl.textContent = redJLoss.toFixed(1);
-      attackLossEl.textContent = atkLoss.toFixed(1);
-      missLossEl.textContent = missLoss.toFixed(1);
+      redJusticeLossEl.textContent = (base * 0.01).toFixed(1);
+      attackLossEl.textContent = (base * 0.51).toFixed(1);
+      missLossEl.textContent = (base * 1.01).toFixed(1);
 
       redJusticeCountEl.textContent = redJ;
       attackCountEl.textContent = atk;
