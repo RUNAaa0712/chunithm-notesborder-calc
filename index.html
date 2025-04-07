@@ -42,9 +42,9 @@
 
   <div id="scoreLoss">
     <p><strong>減点されるスコア</strong></p>
-    <p class="red">赤JUSTICE 約<span id="redJusticeLoss">-</span>点</p>
-    <p class="green">ATTACK 約<span id="attackLoss">-</span>点</p>
-    <p>MISS 約<span id="missLoss">0.0</span>点</p>
+    <p class="red">赤JUSTICE 約<span id="redJusticeLoss">-</span>点 × <span id="redJusticeCount">0</span> = <span id="redJusticeTotal">0</span></p>
+    <p class="green">ATTACK 約<span id="attackLoss">-</span>点 × <span id="attackCount">0</span> = <span id="attackTotal">0</span></p>
+    <p>MISS 約<span id="missLoss">-</span>点 × <span id="missCount">0</span> = <span id="missTotal">0</span></p>
   </div>
 
   <div id="simulation">
@@ -65,6 +65,15 @@
     const redJusticeLossEl = document.getElementById('redJusticeLoss');
     const attackLossEl = document.getElementById('attackLoss');
     const missLossEl = document.getElementById('missLoss');
+
+    const redJusticeCountEl = document.getElementById('redJusticeCount');
+    const attackCountEl = document.getElementById('attackCount');
+    const missCountEl = document.getElementById('missCount');
+
+    const redJusticeTotalEl = document.getElementById('redJusticeTotal');
+    const attackTotalEl = document.getElementById('attackTotal');
+    const missTotalEl = document.getElementById('missTotal');
+
     const resultEl = document.getElementById('result');
     const bordersEl = document.getElementById('borders');
 
@@ -103,11 +112,23 @@
 
       const redJLoss = base * (1 - 1.01);
       const atkLoss = base * 0.5;
-      const missLoss = 0.0;
+      const missLoss = base * 1.0;
+
+      const redTotal = Math.floor(redJLoss * redJ);
+      const atkTotal = Math.floor(atkLoss * atk);
+      const missTotal = Math.floor(missLoss * miss);
 
       redJusticeLossEl.textContent = redJLoss.toFixed(1);
       attackLossEl.textContent = atkLoss.toFixed(1);
       missLossEl.textContent = missLoss.toFixed(1);
+
+      redJusticeCountEl.textContent = redJ;
+      attackCountEl.textContent = atk;
+      missCountEl.textContent = miss;
+
+      redJusticeTotalEl.textContent = redTotal;
+      attackTotalEl.textContent = atkTotal;
+      missTotalEl.textContent = missTotal;
 
       const jcCount = totalNotes - redJ - atk - miss;
       const score = calculateScore(base, redJ, atk, miss, totalNotes);
