@@ -1,3 +1,4 @@
+// JavaScript全体
 const notesInput = document.getElementById('notes');
 const redJInput = document.getElementById('redJ');
 const atkInput = document.getElementById('atk');
@@ -72,31 +73,12 @@ function findMaxAllowed(goal, base, type, totalNotes) {
 
 function updateScore() {
   const totalNotesRaw = notesInput.value.trim();
-  if (totalNotesRaw === '' || isNaN(totalNotesRaw) || Number(totalNotesRaw) < 1) return; // 入力が空欄なら何もしない
+  if (totalNotesRaw === '' || isNaN(totalNotesRaw) || Number(totalNotesRaw) < 1) return;
 
   const totalNotes = Number(totalNotesRaw);
   const redJ = Number(redJInput.value);
   const atk = Number(atkInput.value);
   const miss = Number(missInput.value);
-
-  if (isNaN(totalNotes) || totalNotes <= 0) {
-    animateChange(jcCountSpan, '-');
-    animateChange(redJSpan, '-');
-    animateChange(atkSpan, '-');
-    animateChange(missSpan, '-');
-    animateChange(scoreSpan, '-');
-    animateChange(redJusticeLossEl, '-');
-    animateChange(attackLossEl, '-');
-    animateChange(missLossEl, '-');
-    animateChange(redJusticeCountEl, '-');
-    animateChange(attackCountEl, '-');
-    animateChange(missCountEl, '-');
-    animateChange(redJusticeTotalEl, '-');
-    animateChange(attackTotalEl, '-');
-    animateChange(missTotalEl, '-');
-    bordersEl.innerHTML = "";
-    return;
-  }
 
   const base = 1000000 / totalNotes;
 
@@ -144,3 +126,74 @@ atkInput.addEventListener('input', updateScore);
 missInput.addEventListener('input', updateScore);
 
 updateScore();
+
+// モーダル処理
+const modal = document.getElementById('songModal');
+const openModalBtn = document.getElementById('openModal');
+const closeModalBtn = document.getElementById('closeModal');
+const searchInput = document.getElementById('songSearch');
+const songList = document.getElementById('songList');
+const modalContent = document.getElementById('modalContent');
+
+let allSongs = [];
+let sortAsc = true;
+
+const sortButton = document.createElement('button');
+sortButton.textContent = '曲名で昇順ソート';
+sortButton.style.marginBottom = '10px';
+sortButton.style.width = '100%';
+sortButton.style.padding = '8px';
+sortButton.style.fontWeight = 'bold';
+sortButton.style.border = 'none';
+sortButton.style.borderRadius = '4px';
+sortButton.style.background = '#222';
+sortButton.style.color = '#0ff';
+sortButton.style.cursor = 'pointer';
+
+modalContent.insertBefore(sortButton, songList);
+
+fetch('notelists.json')
+  .then(res => res.json())
+  .then(data => {
+    allSongs = data;
+    renderSongList(data);
+  });
+
+function renderSongList(songs) {
+  songList.innerHTML = '';
+  songs.forEach(song => {
+    const li = document.createElement('li');
+    li.textContent = `${song.title}（Lv${song.level}）`;
+    li.addEventListener('click', () => {
+      notesInput.value = song.count;
+      modal.style.display = 'none';
+      updateScore();
+    });
+    songList.appendChild(li);
+  });
+}
+
+function applyFilterAndSort() {
+  const keyword = searchInput.value.trim();
+  const filtered = allSongs
+    .filter(song => song.title.includes(keyword))
+    .sort((a, b) => sortAsc ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title));
+  renderSongList(filtered);
+}
+
+searchInput.addEventListener('input', applyFilterAndSort);
+sortButton.addEventListener('click', () => {
+  sortAsc = !sortAsc;
+  sortButton.textContent = sortAsc ? '曲名で昇順ソート' : '曲名で降順ソート';
+  applyFilterAndSort();
+});
+
+openModalBtn.addEventListener('click', () => {
+  modal.style.display = 'flex';
+  searchInput.value = '';
+  applyFilterAndSort();
+});
+
+closeModalBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});

@@ -26,10 +26,35 @@ body::before {
   100% { transform: scale(1.2); opacity: 1; }
 }
 
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 4px #0ff88c, 0 0 8px #0ff88c;
+  }
+  50% {
+    box-shadow: 0 0 8px #0ff88c, 0 0 12px #0ff88c;
+  }
+  100% {
+    box-shadow: 0 0 4px #0ff88c, 0 0 8px #0ff88c;
+  }
+}
+
 input[type="number"] {
-  font-size: 16px;
-  padding: 4px;
-  box-sizing: border-box;
+  background: #111;
+  border: 2px solid #0ff;
+  color: #0ff;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 0 5px #0ff88c;
+  transition: 0.2s;
+  animation: glowPulse 2s infinite;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #00faff;
+  box-shadow: 0 0 8px #00faff;
+  background: #000;
 }
 
 #notes {
@@ -103,6 +128,92 @@ input[type="number"] {
   text-shadow:
     0 0 2px rgba(255,255,255,0.6),
     1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* モーダルスタイル */
+#songModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+#modalContent {
+  background: #1b1e2b;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  height: 90%;
+  max-width: 400px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0,255,255,0.4);
+}
+
+#modalContent input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#modalContent ul {
+  list-style: none;
+  padding: 0;
+  max-height: 80%;
+  overflow-y: auto;
+  margin: 0 0 10px 0;
+}
+
+#modalContent li {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+}
+
+#modalContent li:hover {
+  background: rgba(0,255,255,0.1);
+}
+
+#modalContent button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#modalContent button:hover {
+  background: #555;
+}
+
+#openModal {
+  margin-left: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  background: #111;
+  color: #0ff;
+  border: 2px solid #0ff;
+  border-radius: 6px;
+  box-shadow: 0 0 5px #0ff88c;
+  transition: 0.3s;
+  cursor: pointer;
+  animation: glowPulse 2s infinite;
+}
+
+#openModal:hover {
+  background: #000;
+  box-shadow: 0 0 10px #00faff, 0 0 15px #00faff;
 }
 
 @media (max-width: 480px) {

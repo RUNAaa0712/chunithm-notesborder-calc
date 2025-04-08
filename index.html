@@ -7,7 +7,10 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h3>ノート数 <input type="number" id="notes" value="2000"></h3>
+  <h3>
+    ノート数 <input type="number" id="notes" value="2000">
+    <button id="openModal">楽曲から入力</button>
+  </h3>
 
   <div id="scoreBorders">
     <p><strong>スコアボーダー</strong></p>
@@ -35,6 +38,15 @@
     <span id="missSpan" class="gray fade">0</span>
     <span id="scoreSpan" class="blue fade">0</span>
   </p>
+
+  <div id="songModal" style="display:none;">
+    <div id="modalOverlay"></div>
+    <div id="modalContent">
+      <input type="text" id="songSearch" placeholder="楽曲名で検索">
+      <ul id="songList"></ul>
+      <button id="closeModal">閉じる</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
