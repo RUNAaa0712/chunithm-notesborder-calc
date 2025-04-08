@@ -72,7 +72,7 @@ function findMaxAllowed(goal, base, type, totalNotes) {
 
 function updateScore() {
   const totalNotesRaw = notesInput.value.trim();
-  if (totalNotesRaw === '' || totalNotesRaw == '0') return; // 入力が 空欄・0 なら何もしない
+  if (totalNotesRaw === '' || isNaN(totalNotesRaw) || Number(totalNotesRaw) < 1) return; // 入力が空欄なら何もしない
 
   const totalNotes = Number(totalNotesRaw);
   const redJ = Number(redJInput.value);
