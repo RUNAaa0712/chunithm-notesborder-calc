@@ -2,48 +2,60 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スコアシミュレーター</title>
+  <title>CHUNITHM Score Border Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h3>
-    ノート数 <input type="number" id="notes" value="2000">
-    <button id="openModal">楽曲から入力</button>
-  </h3>
+  <div class="container">
+    <h3>
+      ノート数 <input type="number" id="notes" value="2000" min="1">
+      <button id="openModal">楽曲から選択</button>
+    </h3>
 
-  <div id="scoreBorders">
-    <p><strong>スコアボーダー</strong></p>
-    <div id="borders"></div>
+    <div id="scoreBorders" class="panel">
+      <p class="panel-title">スコアボーダー</p>
+      <div id="borders"></div>
+    </div>
+
+    <div id="scoreLoss" class="panel">
+      <p class="panel-title">減点内訳</p>
+      <p class="loss-row red">赤JUSTICE: -<span id="redJusticeLoss" class="fade">0.0</span> × <span id="redJusticeCount" class="fade">0</span> = <span id="redJusticeTotal" class="fade">0</span></p>
+      <p class="loss-row green">ATTACK: -<span id="attackLoss" class="fade">0.0</span> × <span id="attackCount" class="fade">0</span> = <span id="attackTotal" class="fade">0</span></p>
+      <p class="loss-row gray">MISS: -<span id="missLoss" class="fade">0.0</span> × <span id="missCount" class="fade">0</span> = <span id="missTotal" class="fade">0</span></p>
+    </div>
+
+    <div id="simulation" class="panel">
+      <p class="panel-title">シミュレーション</p>
+      <div class="input-group">
+        <label class="red">赤J <input type="number" id="redJ" value="0" min="0"></label>
+        <label class="green">ATK <input type="number" id="atk" value="0" min="0"></label>
+        <label class="gray">MISS <input type="number" id="miss" value="0" min="0"></label>
+      </div>
+    </div>
+
+    <p id="result">
+      <span id="jcCountSpan" class="gold fade">0</span> /
+      <span id="redJSpan" class="red fade">0</span> /
+      <span id="atkSpan" class="green fade">0</span> /
+      <span id="missSpan" class="gray fade">0</span>
+      <br>
+      <span id="scoreSpan" class="blue fade big-score">0</span>
+    </p>
   </div>
 
-  <div id="scoreLoss">
-    <p><strong>減点されるスコア</strong></p>
-    <p class="red">赤JUSTICE 約<span id="redJusticeLoss" class="fade">-</span>点 × <span id="redJusticeCount" class="fade">0</span> = <span id="redJusticeTotal" class="fade">0</span></p>
-    <p class="green">ATTACK 約<span id="attackLoss" class="fade">-</span>点 × <span id="attackCount" class="fade">0</span> = <span id="attackTotal" class="fade">0</span></p>
-    <p class="gray">MISS 約<span id="missLoss" class="fade">-</span>点 × <span id="missCount" class="fade">0</span> = <span id="missTotal" class="fade">0</span></p>
-  </div>
-
-  <div id="simulation">
-    <p><strong>シミュレーション</strong></p>
-    <label class="red">赤J <input type="number" id="redJ" value="0"> 個</label>
-    <label class="green">ATK <input type="number" id="atk" value="0"> 個</label>
-    <label class="gray">MISS <input type="number" id="miss" value="0"> 個</label>
-  </div>
-
-  <p id="result">
-    <span id="jcCountSpan" class="gold fade">0</span>/
-    <span id="redJSpan" class="red fade">0</span>/
-    <span id="atkSpan" class="green fade">0</span>/
-    <span id="missSpan" class="gray fade">0</span>
-    <span id="scoreSpan" class="blue fade">0</span>
-  </p>
-
-  <div id="songModal" style="display:none;">
-    <div id="modalOverlay"></div>
-    <div id="modalContent">
-      <input type="text" id="songSearch" placeholder="楽曲名で検索">
-      <ul id="songList"></ul>
+  <div id="songModal" class="modal" style="display:none;">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <input type="text" id="songSearch" placeholder="楽曲名で検索...">
+      </div>
+      <div class="modal-controls">
+        <button id="sortBtn">曲名で昇順ソート</button>
+      </div>
+      <ul id="songList">
+        <li class="loading-text">データを取得中...</li>
+      </ul>
       <button id="closeModal">閉じる</button>
     </div>
   </div>
